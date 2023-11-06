@@ -1,32 +1,38 @@
-import { useEffect, useState } from 'react';
-import { TCelebrity } from './components/AccordionItem';
+import { useEffect, useCallback } from 'react';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+import Accordion from './components/Accordion';
+import { useCelebState } from './store/store';
 
 function App() {
-	const [celebs, setCelebs] = useState<TCelebrity[]>();
+	const { celebData, setCelebData } = useCelebState();
 
-	const fetchData = async () => {
+	const fetchData = useCallback(async () => {
 		const response = await fetch('./src/data/celebrities.json');
 		const data = await response.json();
-		setCelebs(data);
-	};
+		setCelebData(data);
+	}, [setCelebData]);
 
 	useEffect(() => {
 		fetchData();
-	}, []);
+	}, [fetchData]);
 
 	return (
 		<main className='flex justify-center items-center min-h-screen'>
 			<section className='max-w-lg py-12'>
-				{celebs ? (
-					<pre className='bg-slate-300'>
-						{celebs?.map((el) => (
-							<div key={el.id}>{el.first}</div>
-						))}
-					</pre>
+				{celebData ? (
+					<Accordion celebs={celebData} />
 				) : (
 					<h1>Loading Celebrity Data...</h1>
 				)}
 			</section>
+			{/* <pre className='bg-slate-300'>
+				{data?.map((el) => (
+					<div key={el.id}>{el.first}</div>
+				))}
+			</pre> */}
+			<ToastContainer />
 		</main>
 	);
 }
