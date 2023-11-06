@@ -1,10 +1,12 @@
 import { ChevronDown, ChevronUp, Trash2, Pencil } from 'lucide-react';
+import { toast } from 'react-toastify';
 
 import cn from '../utils/cn';
 import calculateAge from '../utils/calculateAge';
 import { useCelebState } from '../store/store';
 import { TCelebrity } from './AccordionItem';
 import capitalizeFirstLetter from '../utils/capitalizeFirstLetter';
+import toastConfig from '../config/toastConfig';
 
 const ShowCelebDetails = ({
 	celeb,
@@ -20,8 +22,11 @@ const ShowCelebDetails = ({
 	const gender = capitalizeFirstLetter(celeb.gender);
 
 	const setEditState = () => {
-		if (age > 18) setIsEditing(true);
-		else return;
+		if (age > 18) {
+			setIsEditing(true);
+			return;
+		}
+		toast.warning('You can only edit details about adults', toastConfig);
 	};
 
 	return (

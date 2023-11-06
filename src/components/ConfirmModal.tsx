@@ -1,8 +1,16 @@
 import { X } from 'lucide-react';
+import { toast } from 'react-toastify';
+
 import { useCelebState } from '../store/store';
+import toastConfig from '../config/toastConfig';
 
 const ConfirmModal = () => {
 	const { setIsModalOpen, deleteCeleb } = useCelebState();
+
+	const onDeleteHandler = () => {
+		deleteCeleb();
+		toast.success('Successfully deleted', toastConfig);
+	};
 
 	return (
 		<div className='absolute inset-0 bg-white flex justify-center items-center bg-opacity-10 backdrop-blur'>
@@ -21,7 +29,7 @@ const ConfirmModal = () => {
 					<button
 						type='button'
 						className='border border-red-500 bg-red-500 py-1.5 px-6 rounded-xl hover:scale-105 transition'
-						onClick={deleteCeleb}>
+						onClick={onDeleteHandler}>
 						Delete
 					</button>
 				</p>
